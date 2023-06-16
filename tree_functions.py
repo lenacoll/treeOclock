@@ -1,13 +1,13 @@
-__author__ = 'Lena Collienne, Jordan Kettles'
+__author__ = "Lena Collienne, Jordan Kettles"
 
 import os
 from ctypes import *
 
-lib = CDLL(f'{os.path.dirname(os.path.realpath(__file__))}/tree.so')
+lib = CDLL(f"{os.path.dirname(os.path.realpath(__file__))}/tree.so")
 
 
 class NODE(Structure):
-    _fields_ = [('parent', c_long), ('children', c_long * 2), ('time', c_long)]
+    _fields_ = [("parent", c_long), ("children", c_long * 2), ("time", c_long)]
 
     def __init_(self, parent, children, time):
         self.parent = parent
@@ -16,7 +16,7 @@ class NODE(Structure):
 
 
 class TREE(Structure):
-    _fields_ = [('node_array', POINTER(NODE)), ('num_leaves', c_long)]
+    _fields_ = [("node_array", POINTER(NODE)), ("num_leaves", c_long)]
 
     def __init_(self, node_array, num_leaves):
         self.node_array = node_array
@@ -24,7 +24,7 @@ class TREE(Structure):
 
 
 class TREE_ARRAY(Structure):
-    _fields_ = [('trees', POINTER(TREE)), ('num_trees', c_long)]
+    _fields_ = [("trees", POINTER(TREE)), ("num_trees", c_long)]
 
     def __init_(self, trees, num_trees):
         self.trees = trees
@@ -99,6 +99,10 @@ rnni_distance.restype = c_long
 findpath = lib.findpath
 findpath.argtypes = [POINTER(TREE), POINTER(TREE)]
 findpath.restype = TREE_ARRAY
+
+first_findpath_move = lib.first_findpath_move
+first_findpath_move.argtypes = [POINTER(TREE), POINTER(TREE)]
+first_findpath_move.restype = POINTER(TREE)
 
 # from spr.h
 
